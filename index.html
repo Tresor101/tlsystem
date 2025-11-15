@@ -7,25 +7,17 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-container" id="loginContainer">
         <h2>Login</h2>
         <form>
+
             <div class="form-group">
-                <label for="userType">User Type</label>
-                <select id="userType" name="userType" required>
-                    <option value="">Select user type</option>
-                    <option value="superadmin">Super Admin</option>
-                    <option value="admin">Admin</option>
-                    <option value="employee">Employee</option>
-                </select>
+                <label for="email">Username or Email</label>
+                <input type="text" id="email" name="email" required>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password" id="passwordLabel" style="display:none;">Password</label>
+                <input type="password" id="password" name="password" style="display:none;">
             </div>
             <button type="submit" class="login-btn">Login</button>
         </form>
@@ -33,6 +25,32 @@
             <a href="#">Forgot password?</a>
         </div>
     </div>
+    <div id="mainContent" style="display:none;"></div>
     <script src="js/form-validation.js"></script>
+    <script>
+    // Show/hide password field based on user type
+    document.getElementById('email').addEventListener('input', function() {
+        const email = this.value.trim();
+        const passwordField = document.getElementById('password');
+        const passwordLabel = document.getElementById('passwordLabel');
+        if (email === 'admin@tlsystem.com' || email === 'superadmin@tlsystem.com') {
+            passwordField.style.display = 'block';
+            passwordLabel.style.display = 'block';
+            passwordField.required = true;
+        } else {
+            passwordField.style.display = 'none';
+            passwordLabel.style.display = 'none';
+            passwordField.required = false;
+        }
+    });
+
+    // Login form handler
+    document.querySelector('.login-container form').onsubmit = function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        authenticateUser(email, password);
+    };
+    </script>
 </body>
 </html>
